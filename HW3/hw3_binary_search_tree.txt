@@ -1,0 +1,302 @@
+Programming Assignment 3. Binary search tree using doubly-linked lists
+ COMP319 Algorithms, Fall 2019
+ School of Electronics Engineering, Kyungpook National University
+ 장길진
+
+------------------------------------------------------------------- 
+1. 기본 데이터 구조 설명
+
+char key를 가지는 binary tree node를 다음과 같이 정의한다.
+
+#define KEYLENGTH	3
+#define BULK_SIZE	4096
+struct BTNode {	
+  char bulk[BULK_SIZE];
+  struct BTNode *left, *right;
+};
+
+- key는 KEYLENGTH 의 길이를 가지는 문자열이다.
+  (예: "abc", "123", ...)
+  "bulk"에는 key가 숨겨져 있다. 따라서 key를 찾기 위해서는 평균
+  BULK_SIZE/2 번의 검색을 해야 한다.
+- left, right 는 각각 left subtree, right subtree 에 대한 포인터이다.
+
+
+------------------------------------------------------------------- 
+2. 함수정의(주어진 것들)
+
+const char* getkey(struct BTNode *a);
+- 이 함수를 통해서만 key값을 얻어올 수 있다.
+
+int setkey(struct BTNode *a, const char kw[]);
+- 이 함수를 통해서만 node의 key값을 바꿀 수 있다.
+
+int copykey(struct BTNode *dst, struct BTNode *src) 
+{ return setkey(dst,getkey(src)); }
+- 노드간의 key 값 qhrtk
+
+int comparekey(struct BTNode *a, struct BTNode *b);
+// return value: (by character comparison)
+//  -1 if a's key < b's key
+//  0 if a's key == b's key
+//  +1 if a's key > b's key
+- key 값 비교
+
+struct BTNode *generate_btnode(const char kw[]);
+- 주어진 key 값을 가지는 노드를 하나 생성한다
+
+void free_bt_recursive (struct BTNode *bt);
+- 트리 메모리 전체 반환
+
+struct BTNode *copy_bt_recursive (struct BTNode *bt);
+- 트리 복사(복제)
+
+struct BTNode *insert_left_bcnode(struct BTNode *parent, struct BTNode *newPtr );
+- 왼쪽에 집어 넣는다. LHBT (left-half binary tree)를 만들때 사용한다.
+
+struct BTNode *readkeys_textfile_LHBT( const char infile[], int *pN );
+- 주어진 파일에서 LHBT (left-half binary tree)의 형태로 리스트를 만들어
+  반환한다.
+
+/////////////////////////////////////////////////////////////
+// FILL 1: generate a binary search tree using insertion
+/////////////////////////////////////////////////////////////
+struct BTNode *insert_to_BST_leaf(struct BTNode *bst, struct BTNode *newPtr)
+{
+  if ( bst == NULL ) return newPtr;	// new bst as the input node
+  else if ( newPtr == NULL ) return bst;	// nothing to add
+  else {
+    if ( comparekey(bst, newPtr) < 0 ) {
+      /* FILL */
+    }
+    else {
+      /* FILL */
+    }
+  }
+  return bst;
+}
+
+struct BTNode *generate_BST_by_insertion(struct BTNode *lhbt)
+{
+  /* FILL */
+  /* (hint: use insert_to_BST_leaf repeatedly) */
+}
+
+
+------------------------------------------------------------------- 
+3. 출력예제
+
+예) input/i9.txt -> output/o9.txt
+
+=====================================
+100-400-000-800-900-800-500-700-900
+total 9 nodes
+=====================================
+000 100 400 500 700 800 800 900 900 
+total 9 nodes (sorted)
+=====================================
+            900
+                900
+        800
+            800
+                    700
+                500
+    400
+100
+    000
+BST height 6
+=====================================
+100/400/800/900
+               +900
+           +800
+               +500/700
+   +000
+BST height 6
+=====================================
+100/400/800/900
+   |       |   +900
+   |       +800
+   |           +500/700
+   +000
+BST height 6
+=====================================
+800/900/900
+   |   +800
+   +500/700
+       +100/400
+           +000
+Complete BST height 4
+=====================================
+100/400/800/900
+   |       |   +900
+   |       +800
+   |           +500/700
+   +000
+BST by QUICKSORT, height 6
+=====================================
+100/900
+   |   +400/700/800/900
+   |           |   +800
+   |           +500
+   +000
+BST by QUICKSORT v2, height 6
+=====================================
+400/800/900
+   |   |   +900
+   |   +500/700/800
+   +000/100
+BST by QUICKSORT v3, height 5
+=====================================
+TIME 0.00613 seconds
+
+output 폴더에 더 많은 입력 예제들이 있다.
+
+
+------------------------------------------------------------------- 
+4. 구현할 것들
+
+1) BST (bineary search tree) 를 하나씩 삽입하여 만들기
+
+struct BTNode *insert_to_BST_leaf(struct BTNode *bst, struct BTNode *newPtr)
+- binary search tree에서 적절한 위치를 찾아서 left node에 삽입한다. 
+
+struct BTNode *generate_BST_by_insertion(struct BTNode *lhbt)
+- 주어진 LHBT (리스트)에서 노드를 하나씩 뽑아내서 삽입한다.
+
+
+2) BST를 정렬순서로 화면에 표시
+=====================================
+000 100 400 500 700 800 800 900 900 
+total 9 nodes (sorted)
+=====================================
+int print_BST_sortedorder(FILE *fp, struct BTNode *bst, int level)
+  // (hint: inorder traversal)
+  // INPUT
+  //   fp: 화면에 출력할 경우 stdout, 아니면 file pointer
+  //   bst: root node of the BST, should satisfy the property of
+  //      binary search tree, left <= center < right
+  //   level: 현재 bst의 level이다. 0부터 시작하고, 필요없으면 안 써도 됨
+  // RETURNs number of NODES in the list
+
+
+3) BST를 아래와 같이 화면에 표시(node/line)
+=====================================
+            900
+                900
+        800
+            800
+                    700
+                500
+    400
+100
+    000
+BST height 6
+=====================================
+int print_BST_right_center_left(FILE *fp, struct BTNode *bst, int level)
+  // INPUT
+  //   (same as print_BST_sortedorder)
+  // RETURNs HEIGHT-1 of the printed tree (2 in the above example)
+  //   (hint: printing order is right -> center -> left
+  //    carefully count the number of spaces)
+* hint: 표시순서는 right -> center -> left
+
+
+4) BST를 아래와 같이 화면에 표시(center와 left를 한 줄로, right는 아래)
+=====================================
+100/400/800/900
+               +900
+           +800
+               +500/700
+   +000
+BST height 6
+=====================================
+int print_BST_1(FILE *fp, struct BTNode *bst, int level)
+  // prints a binary search tree, rotated by 270 degrees, with less lines
+  //  1) center and right are in the same line
+  //  2) left subtree is below the center
+  //  3) right is connected by '/' and left by '+'
+  // Note: key's length is fixed to KEYLENGTH,
+  // so left and right begins at (KEYLENGTH+1)*level+1
+  //   (hint: printing order is center -> right -> left)
+* hint: 표시순서에 따라 recursive 함수로 구현할 수 있다.
+
+
+5) BST를 아래와 같이 화면에 표시(수직으로 right subtree까지 line을 그린다)
+=====================================
+100/400/800/900
+   |       |   +900
+   |       +800
+   |           +500/700
+   +000
+BST height 6
+=====================================
+int print_BST_2(FILE *fp, struct BTNode *bst, int level)
+  // Hint: stack or some extra variables may help.
+  //       static variable can be used as well
+  //       You may add additional parameter to the function if necessary
+* 필요하다면 함수에 인수들을 추가해도 된다.
+
+
+6) BST를 complete BST로 바꾸어서 height를 최소화한다.
+=====================================
+800/900/900
+   |   +800
+   +500/700
+       +100/400
+           +000
+Complete BST height 4
+=====================================
+struct BTNode *BST_to_completeBST(struct BTNode *bst, int numNodes)
+  // convert a BST to complete BST (minimum height, filling in left first)
+  // INPUT
+  //   bst: root node of the BST, s
+  hould satisfy the property of
+  //      binary search tree, left <= center < right
+  //   numNodes: number of nodes in the bst
+  //      if not necessary in your implementation, do not have to use it  
+  // RETURNs a COMPLETE BST 
+  // (hint: using extra memory (arrays or lists) may help,
+  //  array's rule for parent-child, sorted list, etc.)
+* 필요하다면 함수에 인수들을 추가하거나 삭제해도 된다.
+* hint: complete binary tree 저장을 위한 array를 중간에 사용할 수도 있다. 
+
+
+7) BST를 quick sort를 이용하여 생성하되, generate_BST_by_insertion 과 같은 결과를 만들도록 구현한다.
+=====================================
+100/400/800/900
+   |       |   +900
+   |       +800
+   |           +500/700
+   +000
+BST by QUICKSORT, height 6
+=====================================
+struct BTNode *generate_BST_quicksort_basic(struct BTNode *lhbt)
+- 맨 처음 것을 pivot으로 하고 partition 할 때 원래의 순서를 유지하도록 나누면 된다.
+
+
+8) (challenge) BST를 quick sort를 이용하여 생성하되, 만들어진 tree의 height가 최소가 되도록 partition을 해 본다.
+=====================================
+400/800/900
+   |   |   +900
+   |   +500/700/800
+   +000/100
+BST by QUICKSORT v3, height 5
+=====================================
+struct BTNode *generate_BST_quicksort_advanced(struct BTNode *lhbt)
+- pivot 을 잡는 방법을 이것저것 시도해 본다.
+- (challenge) 알려진 정답은 없다. 시간 복잡도와 사용되는 메모리도 중요함
+
+
+------------------------------------------------------------------- 
+5. 작성 방법 및 채점 기준
+- hw2_template.zip 에 있는 "bst_template.c"의 "FILL" 부분들을 채운다
+- 입력예제: "input/i___.txt"
+- 출력예제: "output/o___.txt"
+  "QUICKSORT v2"와 "QUICKSORT v3"를 제외하고는 출력이 동일해야 한다.
+  (sorted LHBT, print BST 3가지, complete BST, quick sort basic)
+- 채점기준
+  기본 10%
+  정확도 50%
+  실행시간 30%
+  코드의 간결성 10%
+  복사 ==> x0 (0점이 됨. 보여준 사람도 0점. 못 풀겠으면 포기할 것) 

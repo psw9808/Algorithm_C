@@ -1,0 +1,111 @@
+
+#include <stdio.h>
+#define maxitem 1000
+#define maxbagsize 1000
+#define weight 0
+#define value 1
+#define MAX(a,b) a>b ? a:b;
+
+int knapsack(int i, int size);
+int num_data;
+int item[maxitem][2];
+int dp[maxitem][maxbagsize];
+int dp2[maxbagsize][maxitem];
+
+int main(){
+	FILE *fp;
+	int index=0;
+	int data1;
+	int data2;
+	int i;
+	int size;
+	memset(dp, -1, sizeof(dp));
+
+
+	fp = fopen("input.txt","r");
+	while(data2 != -1){
+		fscanf(fp,"%d %d",&data1,&data2);
+		item[index][weight] = data1;
+		item[index][value] = data2;
+		index++;
+	}
+	num_data = --index;
+	size = item[num_data][0];
+	printf(" size = %d \n",size);
+
+	
+	for(i=0; i<num_data; i++){
+		printf("%d %d\n",item[i][weight],item[i][value]);
+	}
+	printf("\n");
+	
+	int k = knapsack(0,size);
+	
+	printf("\n");
+	for(i=0; i<num_data; i++){
+		if(dp2[size][i]==1){
+			printf("%d ",i+1);
+		}
+	}
+	
+	printf("%d\n",k);
+	
+	printf("\n dp : \n ");
+	
+	for(int i=0; i<num_data; i++){
+		printf("\n");
+		for(int j=0;j<size;j++){
+			printf("%2d ",dp[i][j+1]);
+		}
+	}
+	
+	printf("\n\n dp2 : \n ");
+	
+	for(int i=0;i<size;i++){
+		printf("\n");
+			for(int j=0; j<num_data; j++){
+			printf("%2d ",dp2[i+1][j]);
+		}
+	}
+}
+
+int knapsack(int ind, int size){
+	dp2[size][ind] = 1;
+	if(ind==num_data){
+		return 0;
+	}
+
+	int d = dp[ind][size];
+	
+    if (d != -1){
+		dp2[size][ind]=1;
+		return d;
+	}
+	else{
+		if(item[ind][weight] <= size){
+			d = knapsack( ind+1, size-item[ind][weight] ) + item[ind][value];
+			for(int j=0; j<size-item[ind][weight]; j++){
+				dp2[size][j] = dp2[size-item[ind][weight]][j];
+			}
+			dp2[size][ind] = 1;
+		}
+		else{
+			dp2[size][ind] = 0;
+		}
+		d = MAX(d,knapsack(ind+1,size));
+		dp[ind][size] = d;
+		
+		return d;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+

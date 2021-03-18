@@ -1,0 +1,207 @@
+COMP319 Algorithms
+Instructor: Gil-Jin Jang
+
+homework 2 (programming assigment 2) 자세한 설명
+
+---------------------------------------------------------------------------------
+공통) 주어진 template 파일들을 채워서 다음의 기능을 수행하도록 완성한다.
+
+1) insertion sort 를 linked list를 이용하여 구현한다.
+   (File: listsort_template.c, function list_insertion_sort())
+   array를 이용하여 구현한 것은 주어지므로 이를 참고한다.
+   (File: arraysort_template.c, function insertion_sort())
+ - 자세한 구현방법은 hw2_updated_190924.pdf 를 참고하고
+   방법 1, 2, 3 중 어떤 것을 쓰더라도 상관이 없다.
+   (방법 3이 insertion_sort() 와 동일하다.)
+
+2) merge sort를 array를 이용하여 구현한다.
+   (File: arraysort_template.c, function merge_sort())
+
+3) merge sort를 linked list를 이용하여 구현한다.
+   (File: listsort_template.c, function list_merge_sort())
+ - 자세한 구현방법은 hw2_updated_190924.pdf 를 참고한다.
+ 
+4) time challenge
+ - "long ManyItems[2048]" 의 heavy load 를 붙여서 만든 큰 구조체를
+   정렬하도록 하고, 연산시간을 측정한다.
+ - 1), 2), 3) 에서 구현한 코드를 조금만 바꾸면 쉽게 구현이 가능함
+ - File: heavy_arraysort_template.c heavy_listsort_template.c
+   구현할 Funtions(3): merge_sort_heavy(), list_insertion_sort(),
+   list_array_merge_sort(_)
+
+
+---------------------------------------------------------------------------------
+제출)
+- arraysort.c
+- listsort.c
+- heavy_arraysort.c
+- heavy_listsort.c
+  (*_template.c 가 주어짐)
+채점기준)
+- 출력파일이 정확한가?  (arraysort.c listsort.c)
+- 출력파일의 정확도와 연산시간  (heavy_arraysort.c heavy_listsort.c)
+
+
+---------------------------------------------------------------------------------
+파일별 설명)
+hw2_template.zip
+
+- input: 예시 입력파일들, input10.txt, input58.txt, input100.txt, input1234.txt, input12345.txt
+- logs: 실행예시(실행시간)
+- output: 출력예시
+
+- (공통)
+    >> 실행하면 입력파일 이름, 출력파일 이름, 방법(1: insertion, 2: merge)을
+       키보드로 입력하여야 함
+    >> text 파일의 입력과 출력함수는 주어지며, 출력양식은 채점을 위해
+       반드시 주어진 함수 "savekeys_textfile...()" 을 사용하여야 하고
+       내용을 바꾸면 안됨
+    >> /* GJ: FILL */ 로 되어 있는 곳을 채우고,
+       필요하면 추가로 함수를 정의해도 됨.
+    >> 입/출력 양식을 유지하는 한 내용 변경 허용됨.
+
+- arraysort_template.c
+    >> 채점기준: 출력파일, 정렬되어 있는지 검증
+    >> 정렬할 원소는 index 들과 구분하기 위하여 long 으로 정의함
+    >> 구현할 함수: 
+       void merge_sort( long A[], long Tmp[], int left, int right )
+       {   /* GJ: FILL */   }
+    >> 화면출력예시
+       $ arraysort.exe
+       Input file name? input/input10.txt
+       Output file name? output/arraysort-merge-10.txt
+       Method (1: insertion, 2: merge)? 2
+       [74 21 42 94 13 24 80 45 75 37 ]
+       10 Loaded
+       [13 21 24 37 42 45 74 75 80 94 ]
+       Sorted
+    >> 출력파일 output/arraysort-merge-10.txt
+       10 
+       13 21 24 37 42 45 74 75 80 94 
+
+- listsort_template.c
+    >> 채점기준: 출력파일, 정렬되어 있는지 검증
+    >> 정렬할 원소는 다음의 구조체로 주어짐
+       struct LNode {	// update: item type chagned to long, variable name to key
+         long key;
+         struct LNode *next;
+       };
+       (미리 주어진 list 예제는 "int key" --> "long key" 로 변경.
+        이미 구현을 마친 사람은 적절하게 바꾸어 주기 바람)
+    >> 주어진 함수: 파일 입출력, linked list 기본 함수들
+       파일은 먼저 array로 읽어들인 후 list로 변경하는 방법을 사용함
+    >> 구현할 함수: 
+       struct LNode *list_insertion_sort ( struct LNode *head )
+       {   /* GJ: FILL */   }
+       struct LNode *list_array_merge_sort( struct LNode **head_array, int N )
+       {   /* GJ: FILL */   }
+    >> 화면출력, 출력파일 예시: arraysort.c 와 동일
+
+- heavy_arraysort_template.c
+    >> 채점기준:
+       1 출력파일, 정렬되어 있는지 검증
+       2 출력파일이 정확하면 연산시간으로 점수 부여. 출력파일이 틀리면 연산시간 점수 0점
+       3 채점시 공개되지 않은 더 큰 입력 사용 예정
+    >> 다음과 같이 인위적으로 정렬할 원소의 크기를 증가시킴
+       #define LOAD_SIZE	4096
+       struct HLoad {
+         long key;
+         long ManyItems[LOAD_SIZE];
+       };
+    >> 값을 바꾸기 위해 fill_hload(), copy_hload(), print_heavyload_items_randomly()를 사용함
+       listsort.c 를 위의 함수들을 적용하여 변경하여 사용하
+    >> 다른 함수들은 바꾸어도 괜찮지만 입출력 함수는 그대로 사용
+    >> clock() 함수를 사용하여 연산시간 측정: 주어짐
+    >> 구현할 함수: (insertion sort는 예시로 구현되어 있음)
+       void merge_sort_heavy( struct HLoad A[], struct HLoad Tmp[], int left, int right )
+       {   /* GJ: FILL */   }
+    >> 화면출력예시(아래와 비슷한 시간이 걸리면 제대로 구현한 것임. insertion sort 는 이미 구현, 매우 느림)
+       $ heavy_arraysort.exe
+       Input file name? input/input58.txt
+       Output file name? output/heavy_arraysort-insertion-58.txt
+       Method (1: insertion, 2: merge)? 1
+       [74 21 42 94 ... 100 52 83 19 ]
+       58 Loaded
+       [0 6 8 9 10 ... 97 98 99 100 ]
+       Sorted
+       TIME 0.01824 seconds
+
+       $ heavy_arraysort.exe
+       Input file name? input/input58.txt
+       Output file name? output/heavy_arraysort-merge-58.txt
+       Method (1: insertion, 2: merge)? 2
+       [74 21 42 94 ... 100 52 83 19 ]
+       58 Loaded
+       [0 6 8 9 10 ... 97 98 99 100 ]
+       Sorted
+       TIME 0.01577 seconds
+
+       $ heavy_listsort.exe
+       Input file name? input/input12345.txt
+       Output file name? output/heavy_listsort-insertion-12345.txt
+       Method (1: insertion, 2: merge)? 1
+       TIME 421.36131 seconds
+
+       $ heavy_listsort.exe
+       Input file name? input/input12345.txt
+       Output file name? output/heavy_listsort-merge-12345.txt
+       Method (1: insertion, 2: merge)? 2
+       TIME 4.01764 seconds
+       
+    >> 출력파일 output/heavy_arraysort-m2-12345.txt, output/heavy_arraysort-m1-12345.txt(동일함)
+
+- heavy_listsort_template.c
+    >> 채점기준:
+       1 출력파일, 정렬되어 있는지 검증
+       2 출력파일이 정확하면 연산시간으로 점수 부여. 출력파일이 틀리면 연산시간 점수 0점
+       3 채점시 공개되지 않은 더 큰 입력 사용 예정
+    >> 다음과 같이 인위적으로 정렬할 list의 크기를 증가시킴
+       #define LOAD_SIZE	4096
+       struct LHNode {	
+         long key;
+         struct LNode *next;
+         long ManyItems[LOAD_SIZE];
+       };
+    >> 값을 바꾸기 위한 추가적인 함수 불필요.
+       listsort_template.c 거의 그대로 활용 가능
+    >> 다른 함수들은 바꾸어도 괜찮지만 입출력 함수는 그대로 사용
+    >> clock() 함수를 사용하여 연산시간 측정: 주어짐
+    >> 구현할 함수: 
+       struct LHNode *list_insertion_sort ( struct LHNode *head )
+       {   /* GJ: FILL */   }
+       struct LHNode *list_array_merge_sort( struct LHNode **head_array, int N )
+       {   /* GJ: FILL */   }
+    >> 화면출력예시(아래와 비슷한 시간이 걸리면 제대로 구현한 것임. list sort와 거의 차이 없음)
+       $ heavy_listsort.exe
+       Input file name? input/input58.txt
+       Output file name? output/heavy_arraysort-insertion-58.txt
+       Method (1: insertion, 2: merge)? 1
+       [74 21 42 94 ... 100 52 83 19 ]
+       58 Loaded
+       [0 6 8 9 10 ... 97 98 99 100 ]
+       Sorted
+       TIME 0.00345 seconds
+
+       $ heavy_listsort.exe
+       Input file name? input/input58.txt
+       Output file name? output/heavy_arraysort-merge-58.txt
+       Method (1: insertion, 2: merge)? 2
+       [74 21 42 94 ... 100 52 83 19 ]
+       58 Loaded
+       [0 6 8 9 10 ... 97 98 99 100 ]
+       Sorted
+       TIME 0.00362 seconds
+
+       $ heavy_listsort.exe
+       Input file name? input/input12345.txt
+       Output file name? output/heavy_listsort-insertion-12345.txt
+       Method (1: insertion, 2: merge)? 1
+       TIME 1.60501 seconds
+
+       $ heavy_listsort.exe
+       Input file name? input/input12345.txt
+       Output file name? output/heavy_listsort-merge-12345.txt
+       Method (1: insertion, 2: merge)? 2
+       TIME 0.33094 seconds
+       
+    >> 출력파일 output/heavy_listsort-m2-12345.txt, output/heavy_listsort-m1-12345.txt(동일함)

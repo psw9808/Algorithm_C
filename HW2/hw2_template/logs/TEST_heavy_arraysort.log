@@ -1,0 +1,79 @@
+$ heavy_arraysort.exe
+Input file name? input/input10.txt
+Output file name? output/heavy_arraysort-insertion-10.txt
+Method (1: insertion, 2: merge)? 1
+[74 21 42 94 13 24 80 45 75 37 ]
+10 Loaded
+[13 21 24 37 42 45 74 75 80 94 ]
+Sorted
+TIME 0.00219 seconds
+
+$ heavy_arraysort.exe
+Input file name? input/input10.txt
+Output file name? output/heavy_arraysort-merge-10.txt
+Method (1: insertion, 2: merge)? 2
+[74 21 42 94 13 24 80 45 75 37 ]
+10 Loaded
+[13 21 24 37 42 45 74 75 80 94 ]
+Sorted
+TIME 0.00329 seconds
+
+$ heavy_arraysort.exe
+Input file name? input/input58.txt
+Output file name? output/heavy_arraysort-insertion-58.txt
+Method (1: insertion, 2: merge)? 1
+[74 21 42 94 13 24 80 45 75 37 96 28 26 99 97 36 93 18 9 58 64 47 67 86 0 35 10 34 50 39 53 43 73 89 85 81 44 33 61 90 15 71 30 63 88 70 14 6 84 95 8 59 98 82 100 52 83 19 ]
+58 Loaded
+[0 6 8 9 10 13 14 15 18 19 21 24 26 28 30 33 34 35 36 37 39 42 43 44 45 47 50 52 53 58 59 61 63 64 67 70 71 73 74 75 80 81 82 83 84 85 86 88 89 90 93 94 95 96 97 98 99 100 ]
+Sorted
+TIME 0.01824 seconds
+
+$ heavy_arraysort.exe
+Input file name? input/input58.txt
+Output file name? output/heavy_arraysort-merge-58.txt
+Method (1: insertion, 2: merge)? 2
+[74 21 42 94 13 24 80 45 75 37 96 28 26 99 97 36 93 18 9 58 64 47 67 86 0 35 10 34 50 39 53 43 73 89 85 81 44 33 61 90 15 71 30 63 88 70 14 6 84 95 8 59 98 82 100 52 83 19 ]
+58 Loaded
+[0 6 8 9 10 13 14 15 18 19 21 24 26 28 30 33 34 35 36 37 39 42 43 44 45 47 50 52 53 58 59 61 63 64 67 70 71 73 74 75 80 81 82 83 84 85 86 88 89 90 93 94 95 96 97 98 99 100 ]
+Sorted
+TIME 0.01577 seconds
+
+$ heavy_arraysort.exe
+Input file name? input/input1234.txt
+Output file name? output/heavy_arraysort-insertion-1234.txt
+Method (1: insertion, 2: merge)? 1
+[415 540 556 268 461 ...  584 464 177 128 256 361 564 323 ]
+1234 Loaded
+[1 2 2 2 2 3 3 4 4 4 5 ... 595 596 596 596 596 597 598 599 ]
+Sorted
+TIME 5.37125 seconds
+
+$ heavy_arraysort.exe
+Input file name? input/input1234.txt
+Output file name? output/heavy_arraysort-merge-1234.txt
+Method (1: insertion, 2: merge)? 2
+[415 540 556 268 461 ...  584 464 177 128 256 361 564 323 ]
+1234 Loaded
+[1 2 2 2 2 3 3 4 4 4 5 ... 595 596 596 596 596 597 598 599 ]
+Sorted
+TIME 0.35281 seconds
+
+$ heavy_arraysort.exe
+Input file name? input/input12345.txt
+Output file name? output/heavy_arraysort-insertion-12345.txt
+Method (1: insertion, 2: merge)? 1
+[1000 822 174 2252 3922 5905 3138 ... 2224 4828 1651 2905 1687 3018 ]
+12345 Loaded
+[1 1 1 2 2 2 3 3 3 ...  5994 5996 5996 5997 5997 5998 5998 5999 ]
+Sorted
+TIME 421.36131 seconds
+
+$ heavy_arraysort.exe
+Input file name? input/input12345.txt
+Output file name? output/heavy_arraysort-merge-12345.txt
+Method (1: insertion, 2: merge)? 2
+[1000 822 174 2252 3922 5905 3138 ... 2224 4828 1651 2905 1687 3018 ]
+12345 Loaded
+[1 1 1 2 2 2 3 3 3 ...  5994 5996 5996 5997 5997 5998 5998 5999 ]
+Sorted
+TIME 4.01764 seconds
